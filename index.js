@@ -3,14 +3,10 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-//importing fake - data
-import { createRequire } from 'node:module'
-const require = createRequire(import.meta.url)
-const users = require("./MOCK_DATA.json")
-
-
-
-
+// log importing
+const path = './log.html';
+import { LogReqRes } from "./middleware/log.js";
+import Connection from "./db/DB.js";
 
 
 dotenv.config();
@@ -24,18 +20,19 @@ const PORT = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(LogReqRes(path))
+
+
+app.post("/api/testing", (request, response) => {
+  response.send(request.body);
+})
 
 
 
-// API CREATION
-app.get("/api", (request, response) => {
-  response.status(200).json({
-    message: `API created successfully ${process.pid}`,
-  });
-});
 
 
 
 app.listen(PORT, () => {
+  Connection();
   console.log(`Server started at http://localhost:${PORT}`);
 });

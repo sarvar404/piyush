@@ -40,6 +40,15 @@ app.get("/api", (request, response) => {
   });
 });
 
+// API CREATION
+app.get("/api/custom-header", (request, response) => {
+  response.setHeader("X-key", "api-server"); // x represent custom header
+  response.status(200).json({
+    message: `API created successfully ${process.pid}`,
+  });
+});
+
+
 // app.get("/users", (request, response)=> {
 //   const html = `
 //     <ul>
